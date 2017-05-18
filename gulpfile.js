@@ -45,20 +45,26 @@ gulp.task('cache:clear', (callback) => {
     return cache.clearAll(callback)
 })
 
+gulp.task('refresh', () => {
+    runSequence('useref', browserSync.reload)
+})
+
 gulp.task('watch', () => {
     gulp.watch("app/scss/**/*.scss", ['sass'])
-    gulp.watch("app/css/**/*.css", ['useref'])
-    gulp.watch("app/js/**/*.js", ['useref'])
-    gulp.watch('app/js/**/*.js', browserSync.reload)
-    gulp.watch("app/*.html", browserSync.reload)
+    gulp.watch("app/css/**/*.css", ['refresh'])
+    gulp.watch("app/js/**/*.js", ['refresh'])
+    gulp.watch("app/*.html", ['refresh'])
 })
 
 gulp.task('browserSync', () => {
+    // browserSync.init({
+    //     server: {
+    //         baseDir: 'app'
+    //     }
+    // })
     browserSync.init({
-        server: {
-            baseDir: 'app'
-        }
-    })
+		proxy: "http://localhost:3000"
+	})
 })
 
 gulp.task('build', (callback) => {
@@ -69,7 +75,7 @@ gulp.task('build', (callback) => {
     )
 })
 
-gulp.task('default', function (callback) {
+gulp.task('default', (callback) => {
     runSequence(
         ['sass','browserSync', 'watch'],
         callback
