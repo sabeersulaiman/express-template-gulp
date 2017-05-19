@@ -13,14 +13,19 @@ const runSequence = require("run-sequence")
 
 gulp.task('sass', () => {
     return gulp.src('app/scss/**/*.scss')
-        .pipe(sass())
+        .pipe(sass().on('error', errorHandler))
         .pipe(gulp.dest('app/css'))
         .pipe(browserSync.stream())
 })
 
+const errorHandler = (err) => {
+    console.error(err.toString())
+    this.emit('end')
+}
+
 gulp.task('useref', () => {
     return gulp.src("app/*.html")
-        .pipe(useref())
+        .pipe(useref().on('error', errorHandler))
         .pipe(gulpIf("*.js", uglify()))
         .pipe(gulpIf("*.css", cssnano()))
         .pipe(gulp.dest('dist'))
