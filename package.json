@@ -10,20 +10,24 @@
   "author": "SS",
   "license": "ISC",
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
     "browser-sync": "^2.18.11",
     "concurrently": "^3.4.0",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "gulp-cache": "^0.4.6",
     "gulp-cssnano": "^2.1.2",
     "gulp-imagemin": "^3.2.0",
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^2.1.2",
     "gulp-useref": "^3.1.2",
+    "gulp-webpack": "^1.5.0",
     "run-sequence": "^1.2.2"
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "mithril": "^1.1.1"
   }
 }

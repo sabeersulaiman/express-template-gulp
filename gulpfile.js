@@ -10,6 +10,9 @@ const imagemin = require("gulp-imagemin")
 const cache = require("gulp-cache")
 const del = require("del")
 const runSequence = require("run-sequence")
+const webpack = require('gulp-webpack')
+const babel = require('gulp-babel')
+
 
 gulp.task('sass', () => {
     return gulp.src('app/scss/**/*.scss')
@@ -62,6 +65,7 @@ gulp.task('watch', () => {
     gulp.watch("app/scss/**/*.scss", ['sass'])
     gulp.watch("app/css/**/*.css", ['refresh'])
     gulp.watch("app/js/**/*.js", ['refresh'])
+    gulp.watch("app/src/**/*.js", ['webpack'])
     gulp.watch("app/images/**/*.+(png|jpg|gif|svg)", runSequence('images', 'refresh'))
     gulp.watch("app/*.html", ['refresh'])
 })
@@ -87,7 +91,21 @@ gulp.task('build', (callback) => {
 
 gulp.task('default', (callback) => {
     runSequence(
+        'webpack',
         ['sass','browserSync', 'watch'],
         callback
     )
+})
+
+gulp.task('webpack', () => {
+    return gulp.src('./app/src/app.js')
+        .pipe(webpack({
+            output: {
+                filename: 'app.js'
+            }
+        }))
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(gulp.dest('./app/js/'))
 })
