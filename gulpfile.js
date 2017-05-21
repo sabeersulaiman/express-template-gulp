@@ -13,11 +13,12 @@ const runSequence = require("run-sequence")
 
 gulp.task('sass', () => {
     return gulp.src('app/scss/**/*.scss')
-        .pipe(sass().on('error', errorHandler))
+        .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('app/css'))
 })
 
-let errorHandler = (err) => {
+const errorHandler = (err) => {
+    console.dir(err)
     console.error(err.toString())
     this.emit('end')
 }
@@ -58,7 +59,7 @@ gulp.task('update', () => {
 })
 
 gulp.task('watch', () => {
-    gulp.watch("app/scss/**/*.scss", ['update'])
+    gulp.watch("app/scss/**/*.scss", ['sass'])
     gulp.watch("app/css/**/*.css", ['refresh'])
     gulp.watch("app/js/**/*.js", ['refresh'])
     gulp.watch("app/images/**/*.+(png|jpg|gif|svg)", runSequence('images', 'refresh'))
