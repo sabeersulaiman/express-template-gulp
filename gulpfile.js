@@ -15,12 +15,11 @@ gulp.task('sass', () => {
     return gulp.src('app/scss/**/*.scss')
         .pipe(sass().on('error', errorHandler))
         .pipe(gulp.dest('app/css'))
-        .pipe(browserSync.stream())
 })
 
-const errorHandler = (err) => {
+let errorHandler = (err) => {
     console.error(err.toString())
-    gulp.emit('end')
+    this.emit('end')
 }
 
 gulp.task('useref', () => {
