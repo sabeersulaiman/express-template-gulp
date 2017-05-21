@@ -20,7 +20,7 @@ gulp.task('sass', () => {
 
 const errorHandler = (err) => {
     console.error(err.toString())
-    this.emit('end')
+    gulp.emit('end')
 }
 
 gulp.task('useref', () => {
@@ -54,10 +54,15 @@ gulp.task('refresh', () => {
     runSequence('useref', browserSync.reload)
 })
 
+gulp.task('update', () => {
+    runSequence('sass', 'useref', browserSync.reload)
+})
+
 gulp.task('watch', () => {
-    gulp.watch("app/scss/**/*.scss", ['sass'])
+    gulp.watch("app/scss/**/*.scss", ['update'])
     gulp.watch("app/css/**/*.css", ['refresh'])
     gulp.watch("app/js/**/*.js", ['refresh'])
+    gulp.watch("app/images/**/*.+(png|jpg|gif|svg)", runSequence('images', 'refresh'))
     gulp.watch("app/*.html", ['refresh'])
 })
 
